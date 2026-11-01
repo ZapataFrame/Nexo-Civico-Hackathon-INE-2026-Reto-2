@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="352" viewBox="0 0 1280 352" role="img" aria-labelledby="title desc">
+  <title id="title">Nexo cívico</title>
+  <desc id="desc">Escenarios municipales de abstención. Hackathon INE 2026, Reto 2. Conexiones abstractas como recurso de identidad; no representan datos ni territorios.</desc>
+  <rect width="1280" height="352" rx="16" fill="#123D3B"/>
+  <svg x="0" y="0" width="1280" height="352" viewBox="0 0 1280 352" overflow="hidden">
+    <g fill="none" stroke="#5F8F86" stroke-width="2">
+      <path d="M860 94 987 55 1111 107 1214 61M860 94 933 209 1045 168 1111 107 1205 231M933 209 1040 257 1160 284 1205 231M987 55 1045 168 1160 284M1045 168 1211 151 1205 231"/>
+      <circle cx="1045" cy="168" r="51" stroke="#BEE0D3" opacity=".22"/>
+      <circle cx="1045" cy="168" r="75" stroke="#BEE0D3" opacity=".1"/>
+    </g>
+    <g stroke="#123D3B" stroke-width="6">
+      <circle cx="860" cy="94" r="10" fill="#5F8F86"/>
+      <circle cx="987" cy="55" r="12" fill="#BEE0D3"/>
+      <circle cx="1111" cy="107" r="13" fill="#5F8F86"/>
+      <circle cx="1214" cy="61" r="9" fill="#BEE0D3"/>
+      <circle cx="933" cy="209" r="12" fill="#BEE0D3"/>
+      <circle cx="1045" cy="168" r="20" fill="#BEE0D3"/>
+      <circle cx="1211" cy="151" r="9" fill="#BEE0D3"/>
+      <circle cx="1205" cy="231" r="12" fill="#5F8F86"/>
+      <circle cx="1040" cy="257" r="9" fill="#5F8F86"/>
+    </g>
+    <path d="M0 288H1280V352H0Z" fill="#F4F6F5"/>
+    <path d="M64 288H162" stroke="#BEE0D3" stroke-width="4"/>
+  </svg>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="64" y="127" fill="#FFFFFF" font-size="82" font-weight="700" letter-spacing="-2">Nexo cívico</text>
+    <text x="67" y="178" fill="#D1E3DC" font-size="27">Escenarios municipales de abstención</text>
+    <text x="64" y="328" fill="#123D3B" font-size="19" font-weight="700">Hackathon INE 2026 · Reto 2</text>
+    <text x="1216" y="328" fill="#52655D" font-size="17" text-anchor="end">Datos y cartografía · CCPC</text>
+  </g>
+</svg>

@@ -1,0 +1,114 @@
+archivo,campo,tipo,unidad,descripcion
+datos/base_modelo.csv,uso,categoria,conjunto,entrenamiento 2009→2015; backtesting retrospectivo 2015→2021 con exposición previa; proyeccion 2021→2027 sin objetivo observado.
+datos/base_modelo.csv,anio_origen,entero,,Año del que proceden los siete predictores
+datos/base_modelo.csv,anio_destino,entero,,Año del objetivo observado o del horizonte 2027
+datos/base_modelo.csv,entidad_id,texto,clave CCPC,Dos dígitos de la referencia 2021
+datos/base_modelo.csv,municipio_id,texto,clave CCPC,Tres dígitos de la referencia 2021
+datos/base_modelo.csv,identidad_ccpc,texto,,Identificador operativo ccpc_EE_MMM; no clave INEGI
+datos/base_modelo.csv,tipo_transicion,texto,,misma_familia según protocolo temporal v1
+datos/base_modelo.csv,familia_electoral,texto,,intermedia según protocolo temporal v1
+datos/base_modelo.csv,origen_ln,entero,,Lista nominal del municipio en la elección de origen
+datos/base_modelo.csv,origen_tasa_abstencion,proporcion,,NV/(SV+NV) del origen; [0;1]
+datos/base_modelo.csv,origen_proporcion_ns,proporcion,,NS/LN del origen; indicador de calidad [0;1]
+datos/base_modelo.csv,origen_edad_18_29,proporcion,,Proporción de LN de 18 a 29 años en el origen
+datos/base_modelo.csv,origen_edad_30_44,proporcion,,Proporción de LN de 30 a 44 años en el origen
+datos/base_modelo.csv,origen_edad_45_59,proporcion,,Proporción de LN de 45 a 59 años en el origen
+datos/base_modelo.csv,origen_sexo_hombres,proporcion,,Proporción de LN de hombres en el origen
+datos/base_modelo.csv,destino_tasa_abstencion,proporcion,,"NV/(SV+NV) observado en el destino histórico 2015 o 2021; nulo para 2027. Es objetivo, nunca predictor."
+datos/escenarios.csv,id_datos,texto,id anual,Unidad anual enlazada sólo cuando está acreditado; nulo en mapa sin enlace
+datos/escenarios.csv,entidad_id,texto,clave CCPC,Dos dígitos de la referencia 2021
+datos/escenarios.csv,entidad_nombre,texto,nombre CCPC,"Nombre de la entidad tal como aparece en los CSV CCPC 2021 (mayúsculas, sin acentos); sólo etiqueta, unir por clave"
+datos/escenarios.csv,municipio_id,texto,clave CCPC,Tres dígitos de la referencia 2021
+datos/escenarios.csv,etiqueta_datos,texto,etiqueta anual,Nombre y clave original de la referencia de datos
+datos/escenarios.csv,referencia_datos,texto,referencia CCPC,ccpc_municipal_2021; no homologación con 2027
+datos/escenarios.csv,referencia_mapa,texto,referencia CCPC,ccpc_municipal_2024; no cartografía 2027
+datos/escenarios.csv,feature_id,texto,id mapa,Feature CCPC 2024; nulo en estimaciones sólo tabulares
+datos/escenarios.csv,anio_entrada,entero,año,2021
+datos/escenarios.csv,horizonte,entero,año,2027 exploratorio
+datos/escenarios.csv,candidato,texto,modelo,ridge_con_edad_y_sexo_0_1 ajustado con 2009→2015; selección para entrega declarada retrospectiva.
+datos/escenarios.csv,receta_operativa,texto,versión,Identificador de la exportación sociodemográfica; no sustituye persistencia histórica.
+datos/escenarios.csv,estado_estimacion,texto,estado,Calculable o sin_estimacion
+datos/escenarios.csv,motivo_sin_estimacion,texto,motivo,Nulo si calculable; tasa o calidad de origen no calculable; nunca cero artificial
+datos/escenarios.csv,estado_enlace,texto,estado,Decisión visual conservada de CCPC; no habilitar enlaces rechazados
+datos/escenarios.csv,estado_soporte_modelo,categoria,soporte,Dentro/fuera de los rangos de entrenamiento de las variables consumidas por ridge; no intervalo de confianza.
+datos/escenarios.csv,antecedente_backtesting,booleano,estado,Presencia en las 2407 filas 2015→2021; no heredar precisión
+datos/escenarios.csv,escenario,texto,identificador,S0 referencia; S1 reducción hipotética uniforme de 2 pp; otros escenarios como sensibilidad.
+datos/escenarios.csv,delta_supuesto_pp,real,puntos porcentuales,Cambio supuesto; positivo reduce la tasa. No representa eficacia observada.
+datos/escenarios.csv,tasa_s0,real_nulo,proporción,"Referencia exploratoria del ridge con historia y sociodemografía; [0,1] o nulo."
+datos/escenarios.csv,tasa_s1,real_nulo,proporción,"Tasa del escenario identificado: max(0,min(1,S0-delta/100)); no efecto observado."
+datos/escenarios.csv,delta_aplicado_pp,real_nulo,puntos porcentuales,"100*(S0-S1), después de limitar tasas a [0,1]; nulo si no hay estimación."
+datos/escenarios.csv,nivel_s0,categoria,nivel relativo,Bajo/medio/alto con cortes fijos de la referencia ridge; sin_estimacion conserva ausencia.
+datos/escenarios.csv,nivel_s1,categoria,nivel relativo,Nivel del escenario con los mismos cortes S0; cambiar color no demuestra eficacia.
+datos/escenarios.csv,ln_2021,entero,registros,Conteo original de 2021; no conteo proyectado 2027
+datos/escenarios.csv,sv_2021,entero,registros,Conteo original de 2021; no conteo proyectado 2027
+datos/escenarios.csv,nv_2021,entero,registros,Conteo original de 2021; no conteo proyectado 2027
+datos/escenarios.csv,ns_2021,entero,registros,Conteo original de 2021; no conteo proyectado 2027
+datos/escenarios.csv,proporcion_ns_2021,real,proporción,NS/LN del origen; nulo con LN cero; NS separado de abstención
+datos/escenarios.csv,denominador_especificado,entero_nulo,,SV+NV observado en 2021; cero es distinto de ausencia.
+datos/escenarios.csv,fraccion_especificada,proporcion_nula,,"(SV+NV)/LN en [0,1]; ausente con LN cero o conteos incompletos."
+datos/escenarios.csv,limite_inferior_ns,proporcion_nula,,"NV/LN observado en 2021; extremo de sensibilidad a NS, no intervalo predictivo."
+datos/escenarios.csv,limite_superior_ns,proporcion_nula,,"(NV+NS)/LN observado en 2021; extremo de sensibilidad a NS, no intervalo predictivo."
+datos/escenarios.csv,estabilidad_nivel_ns,categoria,,Compara niveles de extremos observados2021 con cortes S0 fijos; estabilidad no acredita suficiencia.
+datos/escenarios.csv,estado_calidad_orientacion,categoria,,Estado de completitud o motivo de revisión según regla operativa interna; conserva tasas y unidades.
+datos/escenarios.csv,motivo_calidad_orientacion,texto,,Explicación del estado; NS=0 sólo acredita conteos especificados completos.
+datos/escenarios.csv,regla_calidad_orientacion,texto,,Versión de la política operativa conservadora; no constituye estándar oficial.
+datos/escenarios.csv,ruta_revision,categoria,ruta,"Primera revisión sugerida: datos, calidad, soporte, antecedente, separación o nivel; no asigna presupuesto."
+datos/orientacion.csv,id_datos,texto,id anual,Unidad anual enlazada sólo cuando está acreditado; nulo en mapa sin enlace
+datos/orientacion.csv,entidad_id,texto,clave CCPC,Dos dígitos de la referencia 2021
+datos/orientacion.csv,entidad_nombre,texto,nombre CCPC,"Nombre de la entidad tal como aparece en los CSV CCPC 2021 (mayúsculas, sin acentos); sólo etiqueta, unir por clave"
+datos/orientacion.csv,municipio_id,texto,clave CCPC,Tres dígitos de la referencia 2021
+datos/orientacion.csv,etiqueta_datos,texto,etiqueta anual,Nombre y clave original de la referencia de datos
+datos/orientacion.csv,referencia_datos,texto,referencia CCPC,ccpc_municipal_2021; no homologación con 2027
+datos/orientacion.csv,referencia_mapa,texto,referencia CCPC,ccpc_municipal_2024; no cartografía 2027
+datos/orientacion.csv,horizonte,entero,año,2027 exploratorio
+datos/orientacion.csv,naturaleza,texto,perfil,s0_sociodemografico: referencia ridge exploratoria; conservar separada de la persistencia histórica.
+datos/orientacion.csv,escenario_consultado,texto,identificador,Escenario consultado; no cambia la orientación basada en S0.
+datos/orientacion.csv,tasa_s0,real_nulo,proporción,"Referencia exploratoria del ridge con historia y sociodemografía; [0,1] o nulo."
+datos/orientacion.csv,nivel_s0,categoria,nivel relativo,Bajo/medio/alto con cortes fijos de la referencia ridge; sin_estimacion conserva ausencia.
+datos/orientacion.csv,estado_estimacion,texto,estado,Calculable o sin_estimacion
+datos/orientacion.csv,motivo_sin_estimacion,texto,motivo,Nulo si calculable; tasa o calidad de origen no calculable; nunca cero artificial
+datos/orientacion.csv,estado_soporte_modelo,categoria,soporte,Dentro/fuera de los rangos de entrenamiento de las variables consumidas por ridge; no intervalo de confianza.
+datos/orientacion.csv,estado_soporte_7,texto,soporte,Dentro fuera o sin_entrada para los siete campos frente a rangos 2009
+datos/orientacion.csv,antecedente_backtesting,booleano,estado,Presencia en las 2407 filas 2015→2021; no heredar precisión
+datos/orientacion.csv,estado_enlace,texto,estado,Decisión visual conservada de CCPC; no habilitar enlaces rechazados
+datos/orientacion.csv,ln_2021,entero,registros,Conteo original de 2021; no conteo proyectado 2027
+datos/orientacion.csv,sv_2021,entero,registros,Conteo original de 2021; no conteo proyectado 2027
+datos/orientacion.csv,nv_2021,entero,registros,Conteo original de 2021; no conteo proyectado 2027
+datos/orientacion.csv,ns_2021,entero,registros,Conteo original de 2021; no conteo proyectado 2027
+datos/orientacion.csv,proporcion_ns_2021,real,proporción,NS/LN del origen; nulo con LN cero; NS separado de abstención
+datos/orientacion.csv,denominador_especificado,entero_nulo,,SV+NV observado en 2021; cero es distinto de ausencia.
+datos/orientacion.csv,fraccion_especificada,proporcion_nula,,"(SV+NV)/LN en [0,1]; ausente con LN cero o conteos incompletos."
+datos/orientacion.csv,limite_inferior_ns,proporcion_nula,,"NV/LN observado en 2021; extremo de sensibilidad a NS, no intervalo predictivo."
+datos/orientacion.csv,limite_superior_ns,proporcion_nula,,"(NV+NS)/LN observado en 2021; extremo de sensibilidad a NS, no intervalo predictivo."
+datos/orientacion.csv,estabilidad_nivel_ns,categoria,,Compara niveles de extremos observados2021 con cortes S0 fijos; estabilidad no acredita suficiencia.
+datos/orientacion.csv,estado_calidad_orientacion,categoria,,Estado de completitud o motivo de revisión según regla operativa interna; conserva tasas y unidades.
+datos/orientacion.csv,motivo_calidad_orientacion,texto,,Explicación del estado; NS=0 sólo acredita conteos especificados completos.
+datos/orientacion.csv,regla_calidad_orientacion,texto,,Versión de la política operativa conservadora; no constituye estándar oficial.
+datos/orientacion.csv,receta_operativa,texto,versión,Identificador de la exportación sociodemográfica; no sustituye persistencia histórica.
+datos/orientacion.csv,receta_recomendacion,texto,versión,orientacion_preventiva_calidad_v3; regla operativa interna de revisión.
+datos/orientacion.csv,estado_propuesta,texto,estado,Orientación exploratoria condicionada; no equivale a autorización institucional.
+datos/orientacion.csv,ruta_revision,categoria,ruta,"Primera revisión sugerida: datos, calidad, soporte, antecedente, separación o nivel; no asigna presupuesto."
+datos/orientacion.csv,accion_propuesta,texto,propuesta,Acción cívica neutral condicionada por datos y diagnóstico local; no actuación aprobada.
+datos/orientacion.csv,condicion_uso,texto,condiciones,"Comprobaciones locales, accesibilidad, recursos y autorización pendientes antes de actuar."
+datos/orientacion.csv,evidencia_faltante,texto,limitaciones,Información local y evidencia de viabilidad/eficacia todavía no acreditadas.
+datos/orientacion.csv,evaluacion_piloto,texto,propuesta,Evaluación propuesta; no describe un piloto ejecutado ni efectos demostrados.
+datos/orientacion.csv,alertas,texto,avisos,"Advertencias acumuladas de calidad, soporte, antecedente y enlace; conservar aunque haya una ruta principal."
+mapas/escenarios.geojson,feature_id,texto,id mapa,Feature CCPC 2024; nulo en estimaciones sólo tabulares
+mapas/escenarios.geojson,entidad_id_mapa,texto,clave CCPC,Clave de entidad de la referencia 2024
+mapas/escenarios.geojson,municipio_id_mapa,texto,clave CCPC,Clave de municipio de la referencia 2024
+mapas/escenarios.geojson,referencia_mapa,texto,referencia CCPC,ccpc_municipal_2024; no cartografía 2027
+mapas/escenarios.geojson,estado_mapa,texto,estado,Calculable sin_tasa sin_enlace_sustentado o sin_origen_2021
+mapas/escenarios.geojson,id_datos,texto,id anual,Unidad anual enlazada sólo cuando está acreditado; nulo en mapa sin enlace
+mapas/escenarios.geojson,referencia_datos,texto,referencia CCPC,ccpc_municipal_2021; no homologación con 2027
+mapas/escenarios.geojson,horizonte,entero,año,2027 exploratorio
+mapas/escenarios.geojson,candidato,texto,modelo,ridge_con_edad_y_sexo_0_1 ajustado con 2009→2015; selección para entrega declarada retrospectiva.
+mapas/escenarios.geojson,escenario_con_intervencion,texto,identificador,"S1 en el GeoJSON comparativo; reducción hipotética uniforme, no efecto medido."
+mapas/escenarios.geojson,delta_supuesto_pp,real,puntos porcentuales,Cambio supuesto; positivo reduce la tasa. No representa eficacia observada.
+mapas/escenarios.geojson,tasa_s0,real_nulo,proporción,"Referencia exploratoria del ridge con historia y sociodemografía; [0,1] o nulo."
+mapas/escenarios.geojson,tasa_s1,real_nulo,proporción,"Tasa del escenario identificado: max(0,min(1,S0-delta/100)); no efecto observado."
+mapas/escenarios.geojson,delta_aplicado_pp,real_nulo,puntos porcentuales,"100*(S0-S1), después de limitar tasas a [0,1]; nulo si no hay estimación."
+mapas/escenarios.geojson,nivel_s0,categoria,nivel relativo,Bajo/medio/alto con cortes fijos de la referencia ridge; sin_estimacion conserva ausencia.
+mapas/escenarios.geojson,nivel_s1,categoria,nivel relativo,Nivel del escenario con los mismos cortes S0; cambiar color no demuestra eficacia.
+mapas/escenarios.geojson,ln_2021,entero,registros,Conteo original de 2021; no conteo proyectado 2027
+mapas/escenarios.geojson,estado_calidad_orientacion,categoria,,Estado de completitud o motivo de revisión según regla operativa interna; conserva tasas y unidades.
+mapas/escenarios.geojson,ruta_revision,categoria,ruta,"Primera revisión sugerida: datos, calidad, soporte, antecedente, separación o nivel; no asigna presupuesto."

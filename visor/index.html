@@ -1,0 +1,72 @@
+<!doctype html>
+<html data-producto="producto.json" data-diccionario="../documentacion/diccionario.csv" data-datos="../datos/" data-mapas="../mapas/" lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nexo cívico · Escenarios municipales de abstención 2027</title>
+<link rel="stylesheet" href="visor.css">
+<script type="module" src="visor.mjs" onerror="fallo_visor()"></script>
+</head>
+<body>
+<a class="saltar" href="#consulta">Ir a la consulta</a>
+<header><div class="marca">INE 2026 <span>RETO 2 · EXPLORACIÓN MUNICIPAL</span></div><h1>Nexo cívico</h1><p>Escenarios de abstención municipal 2027. Compara, municipio por municipio, una referencia estimada (S0) con un escenario hipotético de educación cívica.</p><div class="aviso" id="aviso-referencia"><strong>Resultados exploratorios</strong> · S0 es la referencia; los demás escenarios aplican un cambio supuesto. Su interpretación se indica al cargar los datos.</div></header>
+<main>
+<p id="carga" role="status">Cargando datos y mapas…</p>
+<noscript><p class="error">El visor necesita JavaScript. Actívalo en el navegador y vuelve a abrir la dirección que muestra iniciar.py.</p></noscript>
+<button id="reintentar" hidden>Volver a cargar el visor</button>
+<div id="app" hidden>
+<nav class="modos" aria-label="Vista del visor"><div><strong>Escenarios CCPC</strong><span id="contexto-datos" class="contexto-datos">Cargando datos de la consulta…</span></div><div class="acciones"><button id="vista-exploracion" aria-pressed="true">Vista completa</button><button id="vista-mapa" aria-pressed="false">Sólo mapa</button></div></nav>
+<ol class="pasos" aria-label="Cómo usar el visor"><li><strong>Elige un escenario</strong><span>S0 es la referencia; S1 resta 2 puntos supuestos.</span></li><li><strong>Ubica el territorio</strong><span>Elige una entidad o busca un municipio.</span></li><li><strong>Consulta y descarga</strong><span>Abre el detalle de un municipio y descarga las filas filtradas.</span></li></ol>
+<section class="barra" id="consulta" tabindex="-1" aria-label="Consulta">
+<label>Escenario<select id="escenario" aria-describedby="ayuda-escenario"></select><small id="ayuda-escenario" class="ayuda-campo">Centrales: S0 y S1. Las demás opciones son de sensibilidad.</small></label>
+<label>Entidad<select id="entidad" aria-describedby="ayuda-entidad"><option value="">Todas las entidades</option></select><small id="ayuda-entidad" class="ayuda-campo">Nombre CCPC 2021 y clave. El mapa se acerca a la entidad.</small></label>
+<label class="buscador">Buscar municipio<input type="search" id="buscar" autocomplete="off" placeholder="Nombre o clave, p. ej. Cherán o 16/024" aria-describedby="ayuda-buscar"><small id="ayuda-buscar" class="ayuda-campo">Con o sin acentos. Se combina con la entidad elegida.</small></label>
+<label class="exclusivo-mapa municipio-selector">Consultar municipio<select id="municipio"><option value="">Selecciona un municipio</option></select></label>
+<button id="limpiar" class="secundario">Limpiar filtros</button>
+<details id="filtros-avanzados" class="filtros-avanzados"><summary>Filtros especializados (opcionales) <span id="cuenta-avanzados" class="cuenta"></span></summary>
+<p class="ayuda">Para análisis técnico. Cada municipio debe cumplir todos los filtros elegidos. La orientación se basa en S0 y en la calidad de los datos de 2021; sólo «Nivel del escenario» depende del escenario elegido.</p>
+<div class="campos-avanzados">
+<label>Nivel de referencia S0<select id="nivel-s0"><option value="">Todos</option><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option><option value="sin_estimacion">Sin estimación</option><option value="sin_separacion">Sin separación</option></select></label>
+<label>Nivel del escenario<select id="nivel"><option value="">Todos</option><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option><option value="sin_estimacion">Sin estimación</option><option value="sin_separacion">Sin separación</option></select></label>
+<label>Orientación propuesta<select id="orientacion"><option value="">Todas</option></select></label>
+<label>Calidad de los datos 2021<select id="calidad"><option value="">Todas</option><option value="conteos_especificados_completos">Conteos sin NS</option><option value="revisar_ns">Revisar NS</option><option value="revisar_fuente">Revisar fuente</option><option value="sin_conteos_completos">Conteos incompletos</option><option value="sin_denominador_especificado">Sin denominador especificado</option></select></label>
+<label>Disponibilidad de tasa<select id="disponibilidad"><option value="">Todas</option><option value="calculable">Con tasa</option><option value="sin_estimacion">Sin estimación</option></select></label>
+<label>Enlace al mapa<select id="enlace"><option value="">Todos</option><option value="enlace_sustentado">Con polígono enlazado</option><option value="solo_tabular">Sólo tabular (sin polígono)</option></select></label>
+<label>Evaluación histórica<select id="antecedente"><option value="">Todos</option><option value="True">Con antecedente</option><option value="False">Sin antecedente</option></select></label>
+</div></details>
+</section>
+<p id="explicacion-filtros" class="estado-consulta" role="status" aria-live="polite"></p>
+<section class="resumen" aria-label="Resultados"><div><strong id="total">—</strong><span>municipios en la consulta</span></div><div><strong id="con-tasa">—</strong><span>con tasa estimada</span></div><div><strong id="sin-enlace">—</strong><span>sólo en tabla (sin polígono)</span></div><div><strong id="sin-tasa">—</strong><span>sin estimación</span></div></section>
+<section id="panel-mapas" aria-label="Mapas comparativos">
+<div class="cabecera"><h2 id="titulo-mapas">Referencia y escenario, lado a lado</h2><div class="acciones"><label class="exclusivo-mapa capa-selector">Mostrar<select id="capa-mapa"><option value="s1">Escenario seleccionado</option><option value="s0">Referencia S0</option></select></label><button id="acercar" aria-label="Acercar ambos mapas">＋</button><button id="alejar" aria-label="Alejar ambos mapas">−</button><button id="encuadrar">Encuadrar selección</button><button id="restablecer">Restablecer mapa</button></div></div>
+<p class="lectura-mapa">Cada municipio se colorea según su abstención estimada para 2027: <strong>bajo</strong>, <strong>medio</strong> o <strong>alto</strong>, con los mismos cortes en ambos mapas. Gris: sin tasa o sin polígono enlazado.</p>
+<p id="descripcion" class="cambio-escenario"></p>
+<div class="mapas"><article><h3 id="titulo-s0">S0 · Referencia</h3><svg id="mapa-s0" tabindex="0" role="img" aria-label="Mapa del escenario S0" aria-describedby="contexto-datos cortes"></svg></article><article><h3 id="titulo-s1">Escenario hipotético</h3><svg id="mapa-s1" tabindex="0" role="img" aria-label="Mapa del escenario seleccionado" aria-describedby="contexto-datos cortes"></svg></article></div>
+<div class="leyenda"><span><i class="bajo"></i>Bajo</span><span><i class="medio"></i>Medio</span><span><i class="alto"></i>Alto</span><span><i class="sin_estimacion"></i>Sin tasa asignable</span><span><i class="sin_separacion"></i>Sin separación</span></div>
+<p id="estado-filtros-mapa" class="exclusivo-mapa"></p>
+<p id="cobertura-mapa" class="exclusivo-mapa contexto-semaforo"></p>
+<p id="cortes" class="contexto-semaforo"></p>
+<details class="ayuda-mapa"><summary>Cómo moverse por el mapa</summary><ul><li>Ratón: arrastra para desplazar; usa la rueda o los botones ＋ y − para acercar.</li><li>Pasa el puntero por un municipio para ver sus cifras; haz clic para abrir su detalle.</li><li>Teclado: entra al mapa con Tab, recorre municipios con las flechas, abre el detalle con Enter y ciérralo con Escape.</li><li>Los municipios sólo tabulares no tienen polígono: búscalos por nombre o en la tabla.</li></ul></details>
+</section>
+<section id="detalle" tabindex="-1" aria-label="Detalle de la unidad" class="detalle"><h2>Detalle municipal</h2><p>Selecciona un municipio en el mapa o en la tabla para ver sus tasas, orientación y datos de origen.</p></section>
+<section aria-label="Tabla municipal" id="seccion-tabla"><div class="cabecera"><h2>Municipios y descargas</h2></div>
+<div class="descargas"><div><button id="descargar">Descargar escenarios (CSV)</button><p class="ayuda">Tasas S0 y del escenario activo para las filas filtradas.</p></div><div><button id="descargar-recomendaciones">Descargar orientación (CSV)</button><p class="ayuda">Qué revisar en cada municipio filtrado. No cambia con el escenario.</p></div></div>
+<p id="resumen-descarga" class="ayuda"></p>
+<p id="archivos-completos" class="ayuda" hidden></p>
+<p class="ayuda">En una hoja de cálculo, importa <code>entidad_id</code> y <code>municipio_id</code> como texto para conservar los ceros iniciales. Una celda vacía significa «sin dato», no cero.</p>
+<p id="resultados"></p>
+<div class="tabla"><table><thead><tr><th scope="col">Municipio · entidad · clave</th><th scope="col">S0 referencia</th><th scope="col" id="columna-escenario">Escenario</th><th scope="col">Reducción aplicada</th><th scope="col">Nivel S0 → escenario</th><th scope="col">Tasa y mapa</th><th scope="col">Orientación</th><th scope="col">Consulta</th></tr></thead><tbody id="filas"></tbody></table></div>
+<div class="paginacion"><button id="anterior">Anterior</button><span id="pagina"></span><button id="siguiente">Siguiente</button></div>
+</section>
+<details class="cobertura"><summary>Cobertura de los datos (lista nominal 2021)</summary><p class="ayuda">La lista nominal (LN) corresponde a 2021 y los porcentajes describen la cobertura de los datos. Las unidades sin origen del mapa se cuentan aparte.</p><div class="coberturas"><div><h3>Universo completo</h3><div id="cobertura-global"></div></div><div><h3>Consulta filtrada</h3><div id="cobertura-filtrada"></div></div></div></details>
+<details id="cartografia"><summary>Polígonos del mapa sin datos enlazados</summary><p class="ayuda">Referencia CCPC 2024; esta consulta es independiente de la tabla municipal y su CSV. Respeta entidad y búsqueda; no aplica filtros de tasas o niveles a polígonos sin datos enlazados.</p><p id="total-cartografia"></p><div class="tabla"><table><thead><tr><th>Identificador del mapa</th><th>Etiqueta 2024</th><th>Estado</th><th>Consulta</th></tr></thead><tbody id="filas-cartografia"></tbody></table></div><div class="paginacion"><button id="cart-anterior">Anterior</button><span id="cart-pagina"></span><button id="cart-siguiente">Siguiente</button></div></details>
+<details class="metodologia"><summary>Metodología y procedencia</summary><div id="metadatos" class="secciones-metodologia"></div><p><a id="enlace-diccionario" href="diccionario.csv">Consultar el diccionario de columnas</a></p></details>
+</div>
+<div id="tooltip-mapa" role="tooltip" hidden></div>
+</main><footer>Datos y cartografía: Conteos Censales de Participación Ciudadana (CCPC) · Hackathon INE 2026 · Reto 2</footer>
+<script>
+// Respaldo sin módulos: doble clic (file://) o archivos del visor ausentes o dañados.
+function fallo_visor(){var c=document.getElementById('carga'),r=document.getElementById('reintentar');if(!document.getElementById('app').hidden)return;c.hidden=false;c.className='error';c.setAttribute('role','alert');c.textContent=location.protocol==='file:'?'Este visor no se abre con doble clic. En la carpeta del paquete ejecuta «python iniciar.py» (en Windows, «py iniciar.py») y abre la dirección que indica la terminal, que termina en /visor/.':'No se pudieron cargar los archivos del visor. Comprueba que la terminal de iniciar.py sigue abierta y pulsa «Volver a cargar». Si continúa, extrae de nuevo el ZIP completo en una carpeta nueva.';r.hidden=location.protocol==='file:';r.onclick=function(){location.reload();};}
+window.addEventListener('error',function(e){if(e.target===window)fallo_visor();});
+if(location.protocol==='file:')fallo_visor();
+</script>
+</body></html>
